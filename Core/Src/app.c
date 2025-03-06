@@ -12,52 +12,67 @@
 #define TICK_FREQUENCY_HZ 1000
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
 
-#define TASK_ONE_FREQUENCY_HZ 2 //LED frequency
-#define TASK_TWO_FREQUENCY_HZ 25 //Buttons frequency
+#define TASK_LED_FREQUENCY_HZ 2 //LED frequency
+#define TASK_BUTTONS_FREQUENCY_HZ 25 //Buttons frequency
+#define TASK_JOYSTICK_FREQUENCY_HZ 25 //Joystick frequency
 
-#define TASK_ONE_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_ONE_FREQUENCY_HZ)
-#define TASK_TWO_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_TWO_FREQUENCY_HZ)
+#define TASK_LED_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_LED_FREQUENCY_HZ)
+#define TASK_BUTTONS_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_BUTTONS_FREQUENCY_HZ)
+#define TASK_JOYSTICK_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_JOYSTICK_FREQUENCY_HZ)
 
-static uint32_t taskOneNextRun = 0;
-static uint32_t taskTwoNextRun = 0;
+static uint32_t taskLedNextRun = 0;
+static uint32_t taskButtonsNextRun = 0;
+static uint32_t taskJoystickNextRun = 0;
+
 static uint16_t raw_adc[2];
 
-void task_one_execute(void);
-void task_two_execute(void);
+void task_led_execute(void);
+void task_buttons_execute(void);
+void task_joystick_execute(void);
+
 
 int app_main()
 {
 	buttons_init ();
-	taskOneNextRun = HAL_GetTick() + TASK_ONE_PERIOD_TICKS;
-	taskTwoNextRun = HAL_GetTick() + TASK_TWO_PERIOD_TICKS;
+	taskLedNextRun = HAL_GetTick() + TASK_LED_PERIOD_TICKS;
+	taskButtonsNextRun = HAL_GetTick() + TASK_BUTTONS_PERIOD_TICKS;
+	taskJoystickNextRun = HAL_GetTick() + TASK_JOYSTICK_PERIOD_TICKS;
+
 
 	while (1)
 	{
 		uint32_t ticks = HAL_GetTick();
 
-		if(ticks > taskOneNextRun)
+		if(ticks > taskLedNextRun)
 		{
-		  task_one_execute();
-		  taskOneNextRun += TASK_ONE_PERIOD_TICKS;
+		  task_led_execute();
+		  taskLedNextRun += TASK_LED_PERIOD_TICKS;
 		}
 
-		if (ticks > taskTwoNextRun)
+		if (ticks > taskButtonsNextRun)
 		{
-		  task_two_execute();
-		  taskTwoNextRun += TASK_TWO_PERIOD_TICKS;
+		  task_buttons_execute();
+		  taskButtonsNextRun += TASK_BUTTONS_PERIOD_TICKS;
 		}
+
+		if (ticks > taskJoystickNextRun)
+		{
+		  task_joystick_execute();
+		  taskJoystickNextRun += TASK_JOYSTICK_PERIOD_TICKS;
+		}
+
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
 
 		buttons_update ();
 	}
 }
 
-void task_one_execute(void) //LED
+void task_led_execute(void) //LED
 {
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 }
 
-void task_two_execute(void) //Buttons
+void task_buttons_execute(void) //Buttons
 {
 	if (buttons_checkButton(UP) == PUSHED) //SW1
 	{
@@ -86,6 +101,11 @@ void task_two_execute(void) //Buttons
 		rgb_led_toggle(RGB_LEFT);
 
 	}
+}
+
+void task_joystick_execute(void) //joystick
+{
+
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
