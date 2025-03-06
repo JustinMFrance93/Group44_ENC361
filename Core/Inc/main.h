@@ -71,6 +71,10 @@ void Error_Handler(void);
 #define RGB_DS2_GPIO_Port GPIOC
 #define LD1_Pin GPIO_PIN_5
 #define LD1_GPIO_Port GPIOA
+#define JOYSTICK_X_Pin GPIO_PIN_4
+#define JOYSTICK_X_GPIO_Port GPIOC
+#define JOYSTICK_Y_Pin GPIO_PIN_5
+#define JOYSTICK_Y_GPIO_Port GPIOC
 #define JOYSTICK_CLICK_Pin GPIO_PIN_1
 #define JOYSTICK_CLICK_GPIO_Port GPIOB
 #define RGB_DS3_Pin GPIO_PIN_6
@@ -85,7 +89,6 @@ void Error_Handler(void);
 #define RGB_BLUE_GPIO_Port GPIOD
 #define SW3_Pin GPIO_PIN_10
 #define SW3_GPIO_Port GPIOC
-#define SW3_EXTI_IRQn EXTI4_15_IRQn
 
 /* USER CODE BEGIN Private defines */
 

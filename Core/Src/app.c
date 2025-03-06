@@ -7,18 +7,20 @@
 #include "gpio.h"
 #include "rgb.h"
 #include "buttons.h"
+#include "adc.h"
 
 #define TICK_FREQUENCY_HZ 1000
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
 
-#define TASK_ONE_FREQUENCY_HZ 2
-#define TASK_TWO_FREQUENCY_HZ 25
+#define TASK_ONE_FREQUENCY_HZ 2 //LED frequency
+#define TASK_TWO_FREQUENCY_HZ 25 //Buttons frequency
 
 #define TASK_ONE_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_ONE_FREQUENCY_HZ)
 #define TASK_TWO_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_TWO_FREQUENCY_HZ)
 
 static uint32_t taskOneNextRun = 0;
 static uint32_t taskTwoNextRun = 0;
+static uint16_t raw_adc[2];
 
 void task_one_execute(void);
 void task_two_execute(void);
@@ -44,6 +46,7 @@ int app_main()
 		  task_two_execute();
 		  taskTwoNextRun += TASK_TWO_PERIOD_TICKS;
 		}
+		HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
 
 		buttons_update ();
 	}
@@ -84,3 +87,9 @@ void task_two_execute(void) //Buttons
 
 	}
 }
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+
+}
+
