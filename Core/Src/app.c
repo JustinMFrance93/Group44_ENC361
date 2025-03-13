@@ -31,7 +31,6 @@ static uint32_t taskDisplayNextRun = 0;
 static uint16_t raw_adc[2];
 
 
-
 int app_main()
 {
 	screen_init ();
