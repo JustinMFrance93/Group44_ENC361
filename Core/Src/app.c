@@ -34,8 +34,8 @@ static uint16_t raw_adc[2];
 
 int app_main()
 {
+	screen_init ();
 	buttons_init ();
-	ssd1306_Init();
 	taskBlinkyNextRun = HAL_GetTick() + TASK_BLINKY_PERIOD_TICKS;
 	taskButtonsNextRun = HAL_GetTick() + TASK_BUTTONS_PERIOD_TICKS;
 	taskJoystickNextRun = HAL_GetTick() + TASK_JOYSTICK_PERIOD_TICKS;
@@ -65,15 +65,15 @@ int app_main()
 
 		if(ticks > taskDisplayNextRun)
 		{
-		  task_display_execute();
-		  taskDisplayNextRun += TASK_DISPLAY_PERIOD_TICKS;
+			task_display_execute();
+			taskDisplayNextRun += TASK_DISPLAY_PERIOD_TICKS;
 		}
 
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
 
 		buttons_update ();
 
-		ssd1306_UpdateScreen();
+
 	}
 }
 

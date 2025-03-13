@@ -11,6 +11,7 @@
 #define TASK_DISPLAY_FREQUENCY_HZ 4 //DISPLAY frequency
 #define TASK_DISPLAY_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_DISPLAY_FREQUENCY_HZ)
 
+void screen_init (void);
 
 void task_display_execute(void);
 
