@@ -8,10 +8,20 @@
 #ifndef INC_TASK_BLINKY_H_
 #define INC_TASK_BLINKY_H_
 
+#include <stdint.h>
+#include "config.h"
+
 #define TASK_BLINKY_FREQUENCY_HZ 2 //LED frequency
 #define TASK_BLINKY_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_BLINKY_FREQUENCY_HZ)
 
+void task_blinky_init(void);
 
 void task_blinky_execute(void); //LED
+
+uint32_t getTaskBlinky(void);
+
+void setTaskBlinky(uint32_t nextRunTick);
+void incrementTaskBlinky(void);
+
 
 #endif /* INC_TASK_BLINKY_H_ */
