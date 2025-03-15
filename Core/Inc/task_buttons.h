@@ -9,6 +9,8 @@
 #define INC_TASK_BUTTONS_H_
 
 #include <stdint.h>
+#include <stdbool.h>
+
 #include "config.h"
 
 #define TASK_BUTTONS_FREQUENCY_HZ 25 //Buttons frequency
@@ -19,6 +21,8 @@ void task_buttons_init(void);
 void task_buttons_execute(void); //LED
 
 uint32_t getTaskButtons(void);
+bool getSwitch2(void);
+
 
 void setTaskButtons(uint32_t nextRunTick);
 void incrementTaskButtons(void);

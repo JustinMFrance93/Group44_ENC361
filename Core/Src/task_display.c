@@ -13,6 +13,9 @@
 #include "task_joystick.h"
 #include "stdio.h"
 #include "usart.h"
+#include "task_buttons.h"
+#include <stdbool.h>
+
 
 static uint32_t taskDisplayNextRun;
 static uint16_t joystickXValue;
@@ -29,6 +32,7 @@ void task_display_init(void)
 void task_display_execute(void) //LED
 {
 	uint16_t* joystickValues = getJoystickValues();
+	bool switch2_pressed = getSwitch2();
 	joystickXValue = joystickValues[1];
 	joystickYValue = joystickValues[0];
 
@@ -40,14 +44,18 @@ void task_display_execute(void) //LED
 	ssd1306_SetCursor(0,0);
 	snprintf(joystick_string_x, sizeof(joystick_string_x), "x: %4d  ", joystickXValue);
 	ssd1306_WriteString(joystick_string_x, Font_7x10, White);
-	HAL_UART_Transmit(&huart2, (const uint8_t *)joystick_string_x, sizeof(joystick_string_x), 1000);
+
+
 
 	ssd1306_SetCursor(0,12);
-	snprintf(joystick_string_y, sizeof(joystick_string_y), "y: %4d\n", joystickYValue);
+	snprintf(joystick_string_y, sizeof(joystick_string_y), "y: %4d\r\n", joystickYValue);
 	ssd1306_WriteString(joystick_string_y, Font_7x10, White);
+    if(switch2_pressed)
+    	{
+    		HAL_UART_Transmit(&huart2, (const uint8_t *)joystick_string_x, sizeof(joystick_string_x), 1000);
+    	    HAL_UART_Transmit(&huart2, (const uint8_t *)joystick_string_y, sizeof(joystick_string_y), 1000);
 
-    HAL_UART_Transmit(&huart2, (const uint8_t *)joystick_string_y, sizeof(joystick_string_y), 1000);
-
+    	}
 
 
 	ssd1306_UpdateScreen();

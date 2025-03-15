@@ -10,10 +10,11 @@
 #include "rgb.h"
 #include "gpio.h"
 #include "pwm.h"
+#include <stdbool.h>
 
 
 static uint32_t taskButtonsNextRun;
-
+static bool switch_pressed = false;
 
 void task_buttons_init(void)
 {
@@ -40,6 +41,12 @@ void task_buttons_execute(void) //LED
 		if (buttons_checkButton(DOWN) == PUSHED) //SW2
 		{
 			rgb_led_toggle(RGB_DOWN);
+			if (switch_pressed == true)
+			{
+				switch_pressed = false;
+			} else {
+				switch_pressed = true;
+			}
 
 		}
 
@@ -61,6 +68,11 @@ void task_buttons_execute(void) //LED
 uint32_t getTaskButtons(void)
 {
 	return taskButtonsNextRun;
+}
+
+bool getSwitch2(void)
+{
+	return switch_pressed;
 }
 
 void setTaskButtons(uint32_t nextRunTick)
