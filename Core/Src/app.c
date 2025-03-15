@@ -15,7 +15,6 @@
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
 
 
-static uint16_t raw_adc[2];
 
 
 int app_main()
@@ -58,7 +57,6 @@ int app_main()
 		  incrementTaskDisplay();
 		}
 
-		//HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
 
 
 
@@ -68,8 +66,4 @@ int app_main()
 
 
 
-//void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
-//{
-//
-//}
 

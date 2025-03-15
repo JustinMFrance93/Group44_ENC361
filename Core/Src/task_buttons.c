@@ -6,46 +6,51 @@
  */
 
 #include "task_buttons.h"
-#include "app.h"
 #include "buttons.h"
 #include "rgb.h"
 #include "gpio.h"
+#include "pwm.h"
 
 
 static uint32_t taskButtonsNextRun;
 
+
 void task_buttons_init(void)
 {
 	buttons_init ();
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
 	taskButtonsNextRun = HAL_GetTick() + TASK_BUTTONS_PERIOD_TICKS;
 }
 
 void task_buttons_execute(void) //LED
 {
+	rgb_colour_all_on();
+
 	if (buttons_checkButton(UP) == PUSHED) //SW1
 		{
-			rgb_colour_all_on();
-			rgb_led_toggle(RGB_UP);
+			uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
+			duty += 10;
+			if (duty > 100) {
+				duty = 0;
+			}
+			pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
 		}
 
 
 		if (buttons_checkButton(DOWN) == PUSHED) //SW2
 		{
-			rgb_colour_all_on();
 			rgb_led_toggle(RGB_DOWN);
 
 		}
 
 		if (buttons_checkButton(RIGHT) == PUSHED) //SW3
 		{
-			rgb_colour_all_on();
 			rgb_led_toggle(RGB_RIGHT);
 
 		}
 
 		if (buttons_checkButton(LEFT) == PUSHED) //SW4
 		{
-			rgb_colour_all_on();
 			rgb_led_toggle(RGB_LEFT);
 		}
 
