@@ -14,9 +14,6 @@
 
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
 
-
-
-
 int app_main()
 {
 	task_buttons_init ();
@@ -24,42 +21,29 @@ int app_main()
 	task_joystick_init();
 	task_display_init();
 
-
 	while (1)
 	{
 		uint32_t ticks = HAL_GetTick();
 
-		if(ticks > getTaskBlinky())
-		{
+		if(ticks > getTaskBlinky()) {
 		  task_blinky_execute();
 		  incrementTaskBlinky();
 		}
 
-
-		if(ticks > getTaskButtons())
-		{
+		if(ticks > getTaskButtons()) {
 		  task_buttons_execute();
 		  incrementTaskButtons();
 		}
 
-
-		if(ticks > getTaskJoystick())
-		{
+		if(ticks > getTaskJoystick()) {
 		  task_joystick_execute();
 		  incrementTaskJoystick();
 		}
 
-
-
-		if(ticks > getTaskDisplay())
-		{
+		if(ticks > getTaskDisplay()) {
 		  task_display_execute();
 		  incrementTaskDisplay();
 		}
-
-
-
-
 	}
 }
 

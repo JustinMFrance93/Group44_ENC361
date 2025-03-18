@@ -16,7 +16,7 @@
 
 void task_blinky_init(void);
 
-void task_blinky_execute(void); //LED
+void task_blinky_execute(void);
 
 uint32_t getTaskBlinky(void);
 

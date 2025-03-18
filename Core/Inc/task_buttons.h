@@ -13,12 +13,12 @@
 
 #include "config.h"
 
-#define TASK_BUTTONS_FREQUENCY_HZ 25 //Buttons frequency
+#define TASK_BUTTONS_FREQUENCY_HZ 50 //Buttons frequency
 #define TASK_BUTTONS_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_BUTTONS_FREQUENCY_HZ)
 
 void task_buttons_init(void);
 
-void task_buttons_execute(void); //LED
+void task_buttons_execute(void);
 
 uint32_t getTaskButtons(void);
 bool getSwitch2(void);

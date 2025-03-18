@@ -16,11 +16,12 @@
 
 void task_display_init(void);
 
-void task_display_execute(void); //LED
+void task_display_execute(void);
 
 uint32_t getTaskDisplay(void);
 
 void setTaskDisplay(uint32_t nextRunTick);
+
 void incrementTaskDisplay(void);
 
 #endif /* INC_TASK_DISPLAY_H_ */

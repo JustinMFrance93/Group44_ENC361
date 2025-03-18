@@ -16,11 +16,12 @@
 
 void task_joystick_init(void);
 
-void task_joystick_execute(void); //LED
+void task_joystick_execute(void);
 
 uint32_t getTaskJoystick(void);
 
 void setTaskJoystick(uint32_t nextRunTick);
+
 void incrementTaskJoystick(void);
 
 uint16_t* getJoystickValues(void);

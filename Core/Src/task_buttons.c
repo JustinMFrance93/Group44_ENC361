@@ -23,46 +23,38 @@ void task_buttons_init(void)
 	taskButtonsNextRun = HAL_GetTick() + TASK_BUTTONS_PERIOD_TICKS;
 }
 
-void task_buttons_execute(void) //LED
+void task_buttons_execute(void)
 {
+	//Set LED colour to white
 	rgb_colour_all_on();
 
-	if (buttons_checkButton(UP) == PUSHED) //SW1
-		{
-			uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
-			duty += 10;
-			if (duty > 100) {
-				duty = 0;
-			}
-			pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
+	//SW1 cycle through 10 stages of brightness on top LED
+	if (buttons_checkButton(UP) == PUSHED) {
+		uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
+		duty += 10;
+		if (duty > 100) {
+			duty = 0;
 		}
+		pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
+	}
 
+	//SW2 toggle bottom LED and serial transmit
+	if (buttons_checkButton(DOWN) == PUSHED) {
+		rgb_led_toggle(RGB_DOWN);
+		switch_pressed = !switch_pressed;
+	}
 
-		if (buttons_checkButton(DOWN) == PUSHED) //SW2
-		{
-			rgb_led_toggle(RGB_DOWN);
-			if (switch_pressed == true)
-			{
-				switch_pressed = false;
-			} else {
-				switch_pressed = true;
-			}
+	//SW3 toggle right LED
+	if (buttons_checkButton(RIGHT) == PUSHED) {
+		rgb_led_toggle(RGB_RIGHT);
+	}
 
-		}
+	//SW4 toggle left LED
+	if (buttons_checkButton(LEFT) == PUSHED) {
+		rgb_led_toggle(RGB_LEFT);
+	}
 
-		if (buttons_checkButton(RIGHT) == PUSHED) //SW3
-		{
-			rgb_led_toggle(RGB_RIGHT);
-
-		}
-
-		if (buttons_checkButton(LEFT) == PUSHED) //SW4
-		{
-			rgb_led_toggle(RGB_LEFT);
-		}
-
-		buttons_update ();
-
+	buttons_update ();
 }
 
 uint32_t getTaskButtons(void)
