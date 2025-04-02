@@ -19,6 +19,7 @@
 static uint32_t taskDisplayNextRun;
 static uint16_t joystickXValue;
 static uint16_t joystickYValue;
+static uint16_t potValue;
 
 void task_display_init(void)
 {
@@ -30,15 +31,20 @@ void task_display_execute(void)
 {
 	//Get necessary values from button and joystick modules
 	uint16_t* joystickValues = getJoystickValues();
+	//uint16_t* potValueDisplay = getPotValues();
+
 	bool switch2_pressed = getSwitch2();
-	joystickXValue = joystickValues[1];
-	joystickYValue = joystickValues[0];
+	joystickXValue = joystickValues[2];
+	joystickYValue = joystickValues[1];
+	potValue =  joystickValues[0];
 
 	ssd1306_Fill(Black);
 
 	// Initialize strings
 	char joystick_string_x[30] = {0};
 	char joystick_string_y[30] = {0};
+	char pot_string[30] = {0};
+
 	uint8_t joystickXPercent = 0;
 	char joystickXPosition[10] = "Rest";
 	uint8_t joystickYPercent = 0;
@@ -75,6 +81,12 @@ void task_display_execute(void)
 	}
 	snprintf(joystick_string_y, sizeof(joystick_string_y), "y: %4d %s %d%%\n\r", joystickYValue, joystickYPosition, joystickYPercent);
 	ssd1306_WriteString(joystick_string_y, Font_7x10, White);
+
+	//Write Pot value on display
+	ssd1306_SetCursor(0,24);
+	snprintf(pot_string, sizeof(pot_string), "pot: %d", potValue);
+	ssd1306_WriteString(pot_string, Font_7x10, White);
+
 
 	//Toggle Serial Transmit when Sw2 is pressed
 	if(switch2_pressed) {
