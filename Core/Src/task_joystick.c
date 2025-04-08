@@ -10,7 +10,7 @@
 #include "stdio.h"
 
 static uint32_t taskJoystickNextRun;
-static uint16_t raw_adc_joy[3];
+static uint16_t raw_adc[3];
 
 void task_joystick_init(void)
 {
@@ -19,7 +19,7 @@ void task_joystick_init(void)
 
 void task_joystick_execute(void)
 {
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc_joy, 3);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 3);
 }
 
 uint32_t getTaskJoystick(void)
@@ -39,5 +39,5 @@ void incrementTaskJoystick(void)
 
 uint16_t* getJoystickValues(void)
 {
-	return raw_adc_joy;
+	return raw_adc;
 }
