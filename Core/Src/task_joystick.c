@@ -6,11 +6,11 @@
  */
 #include "task_joystick.h"
 #include "gpio.h"
-#include "adc.h"
 #include "stdio.h"
+#include "adc_value.h"
 
 static uint32_t taskJoystickNextRun;
-static uint16_t raw_adc[2];
+
 
 void task_joystick_init(void)
 {
@@ -19,7 +19,7 @@ void task_joystick_init(void)
 
 void task_joystick_execute(void)
 {
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 2);
+	process_adc_values();
 }
 
 uint32_t getTaskJoystick(void)
@@ -37,7 +37,4 @@ void incrementTaskJoystick(void)
 	taskJoystickNextRun += TASK_JOYSTICK_PERIOD_TICKS;
 }
 
-uint16_t* getJoystickValues(void)
-{
-	return raw_adc;
-}
+
