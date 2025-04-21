@@ -20,6 +20,9 @@ void task_joystick_init(void)
 void task_joystick_execute(void)
 {
 	process_adc_values();
+	if (get_joystick_xchanged()){
+		step_counter_state();
+	}
 }
 
 uint32_t getTaskJoystick(void)
