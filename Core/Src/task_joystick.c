@@ -8,6 +8,7 @@
 #include "gpio.h"
 #include "stdio.h"
 #include "adc_value.h"
+#include "state.h"
 
 static uint32_t taskJoystickNextRun;
 

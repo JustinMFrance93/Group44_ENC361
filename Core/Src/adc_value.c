@@ -18,11 +18,11 @@ static uint16_t joystickYValue;
 static uint16_t potValue;
 static uint16_t potStep;
 
-static uint8_t xPosition = 0; // 0 = rest, 1 = right, 2 = left
+static uint8_t xPosition = 0;
 static uint8_t xPrevPosition = 0;
 static bool xPositionChanged = false;
 
-static uint8_t yPosition = 0; // 0 = rest, 1 = right, 2 = left
+static uint8_t yPosition = 0;
 static uint8_t yPrevPosition = 0;
 static bool yPositionChanged = false;
 static bool changeUnit = true;
@@ -49,7 +49,7 @@ void process_adc_values(void) {
 
     if (joystickYValue < 2150) {
             yPosition = 2;
-    } else if (joystickYValue > 23500) {
+    } else if (joystickYValue > 2350) {
             yPosition = 1;
     } else {
             yPosition = 0;
@@ -71,19 +71,9 @@ uint16_t get_joystick_xposition(void) {
     return xPosition;
 }
 
-uint16_t get_joystick_yposition(void) {
-    return yPosition;
-}
-
 bool get_joystick_xchanged(void) {
     return xPositionChanged;
 }
-
-
-bool get_joystick_ychanged(void) {
-    return yPositionChanged;
-}
-
 
 uint16_t get_pot_step(void) {
     return potStep;
