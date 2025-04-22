@@ -7,6 +7,8 @@
 
 #include "adc_value.h"
 #include "adc.h"
+#include <stdbool.h>
+
 
 static uint16_t raw_adc[3];
 
@@ -16,27 +18,67 @@ static uint16_t joystickYValue;
 static uint16_t potValue;
 static uint16_t potStep;
 
+static uint8_t xPosition = 0;
+static uint8_t xPrevPosition = 0;
+static bool xPositionChanged = false;
+
+static uint8_t yPosition = 0;
+static uint8_t yPrevPosition = 0;
+static bool yPositionChanged = false;
+static bool changeUnit = true;
 
 
 void process_adc_values(void) {
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)raw_adc, 3);
     joystickXValue = raw_adc[2];
     joystickYValue = raw_adc[1];
+
     potValue = ((raw_adc[0] - 147) * 14500 / 3948) + 500;
     potStep = (potValue / 500) * 500;
+
+
+    if (joystickXValue < 1700) {
+        xPosition = 2;
+    }else if (joystickXValue > 2700) {
+        xPosition = 1;
+    } else {
+        xPosition = 0;
+    }
+    xPositionChanged = (xPosition != xPrevPosition);
+    xPrevPosition = xPosition;
+
+    if (joystickYValue < 2150) {
+            yPosition = 2;
+    } else if (joystickYValue > 2350) {
+            yPosition = 1;
+    } else {
+            yPosition = 0;
+    }
+    yPositionChanged = (yPosition != yPrevPosition);
+
+	if (yPositionChanged && yPrevPosition == 0 && (yPosition == 1 || yPosition == 2)) {
+		changeUnit = !changeUnit;
+	}
+
+	yPrevPosition = yPosition;
+
+
+
 }
 
 // Getter functions for the processed ADC values
-uint16_t get_joystick_x(void) {
-    return joystickXValue;
+uint16_t get_joystick_xposition(void) {
+    return xPosition;
 }
 
-uint16_t get_joystick_y(void) {
-    return joystickYValue;
+bool get_joystick_xchanged(void) {
+    return xPositionChanged;
 }
 
 uint16_t get_pot_step(void) {
     return potStep;
 }
 
-
+bool change_unit(void) {
+    return changeUnit;
+}

@@ -8,6 +8,7 @@
 #include "gpio.h"
 #include "stdio.h"
 #include "adc_value.h"
+#include "state.h"
 
 static uint32_t taskJoystickNextRun;
 
@@ -20,6 +21,9 @@ void task_joystick_init(void)
 void task_joystick_execute(void)
 {
 	process_adc_values();
+	if (get_joystick_xchanged()){
+		step_counter_state();
+	}
 }
 
 uint32_t getTaskJoystick(void)
