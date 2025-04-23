@@ -19,8 +19,8 @@
 #include "state.h"
 
 static uint32_t taskDisplayNextRun;
-static int steps = 100;
-static int goal = 1000;
+static uint32_t steps = 100;
+static uint32_t goal = 1000;
 
 
 
@@ -81,6 +81,14 @@ void task_display_execute(void)
 				}
 				ssd1306_WriteString(value_string, Font_7x10, White);
 	}
+	if (state == SET_GOAL){
+			snprintf(title_string, sizeof(title_string), "Set Goal:");
+			ssd1306_WriteString(title_string, Font_7x10, White);
+			ssd1306_SetCursor(0,12);
+
+			snprintf(value_string, sizeof(value_string), "Goal: %d",get_pot_step());
+			ssd1306_WriteString(value_string, Font_7x10, White);
+	}
 
 
 
@@ -90,6 +98,11 @@ void task_display_execute(void)
 uint32_t getTaskDisplay(void)
 {
 	return taskDisplayNextRun;
+}
+
+uint32_t setGoal(uint32_t new_goal)
+{
+	goal = new_goal;
 }
 
 void setTaskDisplay(uint32_t nextRunTick)

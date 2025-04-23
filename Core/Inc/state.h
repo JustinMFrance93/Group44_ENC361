@@ -14,6 +14,7 @@ typedef enum {
 	CURRENT_STEPS,
 	GOAL_PROGRESS,
 	DISTANCE_TRAVELLED,
+	SET_GOAL,
 }state_t;
 
 void step_counter_state(void);

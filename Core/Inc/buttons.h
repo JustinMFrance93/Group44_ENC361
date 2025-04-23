@@ -20,7 +20,7 @@
 //*****************************************************************************
 // Constants
 //*****************************************************************************
-typedef enum butNames {UP = 0, DOWN, LEFT, RIGHT, NUM_BUTTONS} buttonName_t;
+typedef enum butNames {UP = 0, DOWN, LEFT, RIGHT, JOY, NUM_BUTTONS} buttonName_t;
 typedef enum butStates {RELEASED = 0, PUSHED, NO_CHANGE} buttonState_t;
 
 
@@ -47,5 +47,8 @@ void buttons_update (void);
 // NO_CHANGE. The argument butName should be one of constants in the
 // enumeration butStates, excluding 'NUM_BUTS'. Safe under interrupt.
 buttonState_t buttons_checkButton (buttonName_t butName);
+
+uint32_t buttons_getHoldDuration(buttonName_t butName);
+
 
 #endif /*BUTTONS_H_*/
