@@ -22,6 +22,7 @@ static uint8_t xPosition = 0;
 static uint8_t xPrevPosition = 0;
 static bool xPositionChanged = false;
 
+
 static uint8_t yPosition = 0;
 static uint8_t yPrevPosition = 0;
 static bool yPositionChanged = false;
@@ -44,7 +45,9 @@ void process_adc_values(void) {
     } else {
         xPosition = 0;
     }
-    xPositionChanged = (xPosition != xPrevPosition);
+
+
+    xPositionChanged   = (xPosition != xPrevPosition);
     xPrevPosition = xPosition;
 
     if (joystickYValue < 2150) {
@@ -74,6 +77,7 @@ uint16_t get_joystick_xposition(void) {
 bool get_joystick_xchanged(void) {
     return xPositionChanged;
 }
+
 
 uint16_t get_pot_step(void) {
     return potStep;

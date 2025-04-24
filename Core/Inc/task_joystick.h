@@ -24,6 +24,5 @@ void setTaskJoystick(uint32_t nextRunTick);
 
 void incrementTaskJoystick(void);
 
-uint16_t* getJoystickValues(void);
 
 #endif /* INC_TASK_JOYSTICK_H_ */

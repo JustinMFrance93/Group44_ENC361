@@ -38,7 +38,7 @@ void task_buttons_execute(void)
 		pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
 	}
 
-	//SW2 toggle bottom LED and serial transmit
+	//SW2 toggle bottom LED
 	if (buttons_checkButton(DOWN) == PUSHED) {
 		rgb_led_toggle(RGB_DOWN);
 		switch_pressed = !switch_pressed;
@@ -53,6 +53,8 @@ void task_buttons_execute(void)
 	if (buttons_checkButton(LEFT) == PUSHED) {
 		rgb_led_toggle(RGB_LEFT);
 	}
+
+
 
 	buttons_update ();
 }

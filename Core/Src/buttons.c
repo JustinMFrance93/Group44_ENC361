@@ -35,6 +35,9 @@ typedef struct
 	GPIO_PinState state;
 	uint8_t newStateCount;
 	bool hasChanged;
+	uint32_t holdStartTick;
+	uint32_t holdDuration;
+	bool isHeld;
 } buttonProperties_t;
 
 // *******************************************************
@@ -67,6 +70,12 @@ buttonProperties_t buttons[NUM_BUTTONS] =
 			.port = GPIOC,
 			.pin = GPIO_PIN_10,
 			.normalState = GPIO_PIN_RESET
+		},
+		//Joystick button
+		[JOY] = {
+		    .port = GPIOB,
+		    .pin = GPIO_PIN_1,
+		    .normalState = GPIO_PIN_RESET
 		}
 };
 
@@ -79,6 +88,10 @@ void buttons_init (void)
 		buttons[i].state = buttons[i].normalState;
 		buttons[i].newStateCount = 0;
 		buttons[i].hasChanged = false;
+		buttons[i].holdStartTick = 0;
+		buttons[i].holdDuration = 0;
+		buttons[i].isHeld = false;
+
 	}
 }
 
@@ -93,6 +106,7 @@ void buttons_init (void)
 // a flag is set. Set NUM_BUT_POLLS according to the polling rate.
 void buttons_update (void)
 {
+	uint32_t currentTick = HAL_GetTick();
 	// Iterate through the buttons, updating button variables as required
 	for (int i = 0; i < NUM_BUTTONS; i++)
 	{
@@ -110,11 +124,30 @@ void buttons_update (void)
         		buttons[i].state = rawState;
         		buttons[i].hasChanged = true;	// Reset by call to buttons_checkButton()
         		buttons[i].newStateCount = 0;
+
+        		if (rawState != buttons[i].normalState)
+				{
+					// Button pressed
+					buttons[i].holdStartTick = currentTick;
+					buttons[i].isHeld = true;
+
+				}
+				else
+				{
+					// Button released
+					buttons[i].isHeld = false;
+					buttons[i].holdDuration = currentTick - buttons[i].holdStartTick;
+				}
         	}
         }
         else
         {
         	buttons[i].newStateCount = 0;
+
+        	if (buttons[i].isHeld && buttons[i].state != buttons[i].normalState)
+			{
+				buttons[i].holdDuration = currentTick - buttons[i].holdStartTick;
+			}
         }
 	}
 }
@@ -136,3 +169,15 @@ buttonState_t buttons_checkButton (buttonName_t butName)
 	return NO_CHANGE;
 }
 
+// *******************************************************
+// Get how long the button has been held (ms)
+uint32_t buttons_getHoldDuration(buttonName_t butName)
+{
+	return buttons[butName].holdDuration;
+}
+
+void buttons_reset(buttonName_t butName)
+{
+    buttons[butName].holdDuration = 0;
+    buttons[butName].holdStartTick = HAL_GetTick();
+}
