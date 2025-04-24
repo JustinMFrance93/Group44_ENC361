@@ -52,9 +52,9 @@ void task_display_execute(void)
 
 		ssd1306_SetCursor(0,12);
 		if (change_unit()) {
-			snprintf(value_string, sizeof(value_string), "Steps: %d",steps);
+			snprintf(value_string, sizeof(value_string), "Steps: %d%%",stepsPercent);
 		} else {
-				snprintf(value_string, sizeof(value_string), "Steps: %d%%",stepsPercent);
+			snprintf(value_string, sizeof(value_string), "Steps: %lu",steps);
 		}
 		ssd1306_WriteString(value_string, Font_7x10, White);
 
@@ -65,7 +65,7 @@ void task_display_execute(void)
 		ssd1306_WriteString(title_string, Font_7x10, White);
 		ssd1306_SetCursor(0,12);
 
-		snprintf(value_string, sizeof(value_string), "%d / %d",steps, goal);
+		snprintf(value_string, sizeof(value_string), "%lu / %lu",steps, goal);
 		ssd1306_WriteString(value_string, Font_7x10, White);
 	}
 
@@ -103,6 +103,7 @@ uint32_t getTaskDisplay(void)
 uint32_t setGoal(uint32_t new_goal)
 {
 	goal = new_goal;
+	return goal;
 }
 
 void setTaskDisplay(uint32_t nextRunTick)

@@ -176,3 +176,8 @@ uint32_t buttons_getHoldDuration(buttonName_t butName)
 	return buttons[butName].holdDuration;
 }
 
+void buttons_reset(buttonName_t butName)
+{
+    buttons[butName].holdDuration = 0;
+    buttons[butName].holdStartTick = HAL_GetTick();
+}

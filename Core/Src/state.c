@@ -9,17 +9,26 @@
 #include "buttons.h"
 #include "task_display.h"
 
-static state_t current_state = CURRENT_STEPS;
+static state_t current_state = GOAL_PROGRESS;
+static state_t previous_state = GOAL_PROGRESS;
 static bool xMoveOk =  true;
 
 void step_counter_state(void) {
 
 	uint16_t xValue = get_joystick_xposition();
-
     bool xReady = (xValue != 0 && xMoveOk);
     if (xValue == 0) {
     	xMoveOk = true;
     }
+
+    if (current_state != previous_state) {
+        if (current_state == GOAL_PROGRESS) {
+            buttons_reset(JOY);
+        }
+        previous_state = current_state;
+    }
+
+
 
     switch (current_state) {
         case CURRENT_STEPS:
@@ -31,6 +40,7 @@ void step_counter_state(void) {
             break;
 
         case GOAL_PROGRESS:
+
             if (xReady) {
                 if (xValue == 1) current_state = DISTANCE_TRAVELLED;
                 else if (xValue == 2) current_state = CURRENT_STEPS;

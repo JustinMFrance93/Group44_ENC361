@@ -50,5 +50,7 @@ buttonState_t buttons_checkButton (buttonName_t butName);
 
 uint32_t buttons_getHoldDuration(buttonName_t butName);
 
+void buttons_reset(buttonName_t butName);
+
 
 #endif /*BUTTONS_H_*/
