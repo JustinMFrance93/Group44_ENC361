@@ -76,7 +76,7 @@ void task_display_execute(void)
 				if (change_unit()) {
 					snprintf(value_string, sizeof(value_string), "Distance: %.3f km",nums.kilometers);
 				} else {
-						snprintf(value_string, sizeof(value_string), "Distance: %d yd",nums.yards);
+						snprintf(value_string, sizeof(value_string), "Distance: %lu yd",nums.yards);
 				}
 				ssd1306_WriteString(value_string, Font_7x10, White);
 	}

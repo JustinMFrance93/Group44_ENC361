@@ -25,6 +25,10 @@ void task_joystick_execute(void)
 	process_adc_values();
 	step_counter_state();
 	step_count();
+	if (get_test_mode()) {
+		test_mode();
+	}
+
 
 }
 

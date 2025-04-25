@@ -9,6 +9,8 @@
 #define INC_NUMBERS_H_
 
 #include "stdint.h"
+#include <stdbool.h>
+
 
 typedef struct {
 	uint32_t steps;
@@ -21,8 +23,21 @@ typedef struct {
 extern numbers_t nums;
 
 void step_count();
-void step_incremnt();
-uint32_t setGoal(uint32_t new_goal);
+
+void step_increment();
+
+bool change_unit(void) ;
+
+
+uint32_t set_goal(uint32_t new_goal);
+
+void toggle_test_mode();
+
+bool get_test_mode();
+
+void test_mode();
+
+
 
 
 #endif /* INC_NUMBERS_H_ */

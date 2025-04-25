@@ -31,7 +31,7 @@ void task_buttons_execute(void)
 
 	//SW1 cycle through 10 stages of brightness on top LED
 	if (buttons_checkButton(UP) == PUSHED) {
-		step_incremnt();
+		step_increment();
 
 		uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
 		duty += 10;
@@ -43,6 +43,7 @@ void task_buttons_execute(void)
 
 	//SW2 toggle bottom LED
 	if (buttons_checkButton(DOWN) == PUSHED) {
+		toggle_test_mode();
 		rgb_led_toggle(RGB_DOWN);
 		switch_pressed = !switch_pressed;
 	}

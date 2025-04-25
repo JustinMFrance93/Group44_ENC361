@@ -64,7 +64,7 @@ void step_counter_state(void) {
         case SET_GOAL:
             if (buttons_checkButton(JOY) == RELEASED) {
                 if (buttons_getHoldDuration(JOY) > 1000) {
-                    setGoal(get_pot_step());
+                    set_goal(get_pot_step());
                 }
                 current_state = GOAL_PROGRESS;
             }
