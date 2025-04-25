@@ -10,6 +10,7 @@
 #include "rgb.h"
 #include "gpio.h"
 #include "pwm.h"
+#include "numbers.h"
 #include <stdbool.h>
 
 
@@ -30,6 +31,8 @@ void task_buttons_execute(void)
 
 	//SW1 cycle through 10 stages of brightness on top LED
 	if (buttons_checkButton(UP) == PUSHED) {
+		step_incremnt();
+
 		uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
 		duty += 10;
 		if (duty > 100) {

@@ -17,10 +17,11 @@
 #include "task_buttons.h"
 #include <stdbool.h>
 #include "state.h"
+#include "numbers.h"
 
 static uint32_t taskDisplayNextRun;
-static uint32_t steps = 100;
-static uint32_t goal = 1000;
+//static uint32_t steps = 100;
+//static uint32_t goal = 1000;
 
 
 
@@ -41,20 +42,18 @@ void task_display_execute(void)
 	ssd1306_SetCursor(0,0);
 	char title_string[30] = {0};
 	char value_string[30] = {0};
-	int stepsPercent = steps * 100 / goal;
-	float kilometers = (steps * 0.9) / 1000;
-	int yards = kilometers * 1094;
+//	int stepsPercent = steps * 100 / goal;
+//	float kilometers = (steps * 0.9) / 1000;
+//	int yards = kilometers * 1094;
 
 	if (state == CURRENT_STEPS){
 		snprintf(title_string, sizeof(title_string), "Current Steps:");
 		ssd1306_WriteString(title_string, Font_7x10, White);
-
-
 		ssd1306_SetCursor(0,12);
 		if (change_unit()) {
-			snprintf(value_string, sizeof(value_string), "Steps: %d%%",stepsPercent);
+			snprintf(value_string, sizeof(value_string), "Steps: %lu%%",nums.step_percent);
 		} else {
-			snprintf(value_string, sizeof(value_string), "Steps: %lu",steps);
+			snprintf(value_string, sizeof(value_string), "Steps: %lu",nums.steps);
 		}
 		ssd1306_WriteString(value_string, Font_7x10, White);
 
@@ -65,7 +64,7 @@ void task_display_execute(void)
 		ssd1306_WriteString(title_string, Font_7x10, White);
 		ssd1306_SetCursor(0,12);
 
-		snprintf(value_string, sizeof(value_string), "%lu / %lu",steps, goal);
+		snprintf(value_string, sizeof(value_string), "%lu / %lu",nums.steps, nums.goal);
 		ssd1306_WriteString(value_string, Font_7x10, White);
 	}
 
@@ -75,9 +74,9 @@ void task_display_execute(void)
 
 		ssd1306_SetCursor(0,12);
 				if (change_unit()) {
-					snprintf(value_string, sizeof(value_string), "Distance: %.3f km",kilometers);
+					snprintf(value_string, sizeof(value_string), "Distance: %.3f km",nums.kilometers);
 				} else {
-						snprintf(value_string, sizeof(value_string), "Distance: %d yd",yards);
+						snprintf(value_string, sizeof(value_string), "Distance: %d yd",nums.yards);
 				}
 				ssd1306_WriteString(value_string, Font_7x10, White);
 	}
@@ -100,11 +99,11 @@ uint32_t getTaskDisplay(void)
 	return taskDisplayNextRun;
 }
 
-uint32_t setGoal(uint32_t new_goal)
-{
-	goal = new_goal;
-	return goal;
-}
+//uint32_t setGoal(uint32_t new_goal)
+//{
+//	goal = new_goal;
+//	return goal;
+//}
 
 void setTaskDisplay(uint32_t nextRunTick)
 {

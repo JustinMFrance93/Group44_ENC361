@@ -10,6 +10,7 @@
 #include "adc_value.h"
 #include "buttons.h"
 #include "state.h"
+#include "numbers.h"
 
 static uint32_t taskJoystickNextRun;
 
@@ -23,6 +24,7 @@ void task_joystick_execute(void)
 {
 	process_adc_values();
 	step_counter_state();
+	step_count();
 
 }
 
