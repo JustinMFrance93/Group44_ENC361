@@ -53,16 +53,23 @@ void test_mode(){
 	int32_t delta_steps = (get_y_percentage() * nums.goal) / PRESCALER;
 
 	// yPosition == 2, joy stick up = increase step count
-	if (get_joystick_yposition() == 2) {
-		nums.steps += delta_steps;
+	if (get_joystick_yposition() == 2 && nums.steps < nums.goal) {
+		if (nums.steps + delta_steps  > nums.goal){
+			nums.steps = nums.goal;
+		} else {
+			nums.steps += delta_steps;
+		}
 	}
 	// yPosition == 1, joy stick down = increase step count
-	if (get_joystick_yposition() == 1) {
-		nums.steps -= delta_steps;
+	if (get_joystick_yposition() == 1 && nums.steps > 0) {
+		if (nums.steps - delta_steps < 0) {
+			nums.steps = 0;
+		} else {
+			nums.steps -= delta_steps;
+		}
 	}
 
-	//prevent steps going negative
-	if ((int32_t)nums.steps < 0) nums.steps = 0;
+
 
 	step_count();
 

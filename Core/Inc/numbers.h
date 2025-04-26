@@ -13,7 +13,7 @@
 
 
 typedef struct {
-	uint32_t steps;
+	int32_t steps;
     uint32_t goal;
     uint32_t step_percent;
     float kilometers;
