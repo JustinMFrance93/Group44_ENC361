@@ -16,6 +16,9 @@
 
 static uint32_t taskButtonsNextRun;
 static bool switch_pressed = false;
+static uint32_t buttonCount;
+static uint32_t last_reset_time = 0;
+
 
 void task_buttons_init(void)
 {
@@ -26,6 +29,8 @@ void task_buttons_init(void)
 
 void task_buttons_execute(void)
 {
+	uint32_t current_time = HAL_GetTick();
+
 	//Set LED colour to white
 	rgb_colour_all_on();
 
@@ -43,7 +48,7 @@ void task_buttons_execute(void)
 
 	//SW2 toggle bottom LED
 	if (buttons_checkButton(DOWN) == PUSHED) {
-		toggle_test_mode();
+		buttonCount += 1;
 		rgb_led_toggle(RGB_DOWN);
 		switch_pressed = !switch_pressed;
 	}
@@ -58,7 +63,15 @@ void task_buttons_execute(void)
 		rgb_led_toggle(RGB_LEFT);
 	}
 
+	if (current_time - last_reset_time >= 1200) {
+		buttonCount = 0;
+		last_reset_time = current_time;
+	}
 
+	if (buttonCount == 2){
+		toggle_test_mode();
+		buttonCount = 0;
+	}
 
 	buttons_update ();
 }
