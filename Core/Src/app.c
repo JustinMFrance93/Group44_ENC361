@@ -10,6 +10,7 @@
 #include "task_buttons.h"
 #include "task_joystick.h"
 #include "task_display.h"
+#include "task_buzzer.h"
 #include "config.h"
 
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
@@ -20,6 +21,8 @@ int app_main()
 	task_blinky_init();
 	task_joystick_init();
 	task_display_init();
+	task_buzzer_init();
+
 
 	while (1)
 	{
@@ -43,6 +46,11 @@ int app_main()
 		if(ticks > getTaskDisplay()) {
 		  task_display_execute();
 		  incrementTaskDisplay();
+		}
+
+		if(ticks > getTaskBuzzer()) {
+		  task_buzzer_execute();
+		  incrementTaskBuzzer();
 		}
 
 
