@@ -12,6 +12,7 @@
 #include "pwm.h"
 #include "numbers.h"
 #include <stdbool.h>
+#include "state.h"
 
 
 static uint32_t taskButtonsNextRun;
@@ -33,44 +34,45 @@ void task_buttons_execute(void)
 
 	//Set LED colour to white
 	rgb_colour_all_on();
+	if (get_state() != SET_GOAL){
+		//SW1 cycle through 10 stages of brightness on top LED
+		if (buttons_checkButton(UP) == PUSHED) {
+			step_increment();
 
-	//SW1 cycle through 10 stages of brightness on top LED
-	if (buttons_checkButton(UP) == PUSHED) {
-		step_increment();
-
-		uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
-		duty += 10;
-		if (duty > 100) {
-			duty = 0;
+			uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
+			duty += 10;
+			if (duty > 100) {
+				duty = 0;
+			}
+			pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
 		}
-		pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
-	}
 
-	//SW2 toggle bottom LED
-	if (buttons_checkButton(DOWN) == PUSHED) {
-		buttonCount += 1;
-		rgb_led_toggle(RGB_DOWN);
-		switch_pressed = !switch_pressed;
-	}
+		//SW2 toggle bottom LED
+		if (buttons_checkButton(DOWN) == PUSHED) {
+			buttonCount += 1;
+			rgb_led_toggle(RGB_DOWN);
+			switch_pressed = !switch_pressed;
+		}
 
-	//SW3 toggle right LED
-	if (buttons_checkButton(RIGHT) == PUSHED) {
-		rgb_led_toggle(RGB_RIGHT);
-	}
+		//SW3 toggle right LED
+		if (buttons_checkButton(RIGHT) == PUSHED) {
+			rgb_led_toggle(RGB_RIGHT);
+		}
 
-	//SW4 toggle left LED
-	if (buttons_checkButton(LEFT) == PUSHED) {
-		rgb_led_toggle(RGB_LEFT);
-	}
+		//SW4 toggle left LED
+		if (buttons_checkButton(LEFT) == PUSHED) {
+			rgb_led_toggle(RGB_LEFT);
+		}
 
-	if (current_time - last_reset_time >= 1200) {
-		buttonCount = 0;
-		last_reset_time = current_time;
-	}
+		if (current_time - last_reset_time >= 1200) {
+			buttonCount = 0;
+			last_reset_time = current_time;
+		}
 
-	if (buttonCount == 2){
-		toggle_test_mode();
-		buttonCount = 0;
+		if (buttonCount == 2){
+			toggle_test_mode();
+			buttonCount = 0;
+		}
 	}
 
 	buttons_update ();

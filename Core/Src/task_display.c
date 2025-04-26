@@ -51,9 +51,10 @@ void task_display_execute(void)
 		ssd1306_WriteString(title_string, Font_7x10, White);
 		ssd1306_SetCursor(0,12);
 		if (change_unit()) {
-			snprintf(value_string, sizeof(value_string), "Steps: %lu%%",nums.step_percent);
-		} else {
 			snprintf(value_string, sizeof(value_string), "Steps: %lu",nums.steps);
+
+		} else {
+			snprintf(value_string, sizeof(value_string), "Steps: %lu%%",nums.step_percent);
 		}
 		ssd1306_WriteString(value_string, Font_7x10, White);
 

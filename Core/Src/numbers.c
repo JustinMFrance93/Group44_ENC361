@@ -29,7 +29,7 @@ void step_increment() {
 }
 
 bool change_unit(void) {
-	if (get_joystick_ychanged() && get_joystick_yposition() != 0 && !testmode) {
+	if (get_joystick_ychanged() && get_joystick_yposition() == 2 && !testmode) {
 		changeUnit = !changeUnit;
 	}
 	return changeUnit;

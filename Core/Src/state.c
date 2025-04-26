@@ -9,8 +9,8 @@
 #include "buttons.h"
 #include "task_display.h"
 
-static state_t current_state = GOAL_PROGRESS;
-static state_t previous_state = GOAL_PROGRESS;
+static state_t current_state = DISTANCE_TRAVELLED;
+static state_t previous_state = DISTANCE_TRAVELLED;
 static bool xMoveOk =  true;
 
 void step_counter_state(void) {
@@ -33,8 +33,8 @@ void step_counter_state(void) {
     switch (current_state) {
         case CURRENT_STEPS:
             if (xReady) {
-                if (xValue == 1) current_state = GOAL_PROGRESS;
-                else if (xValue == 2) current_state = DISTANCE_TRAVELLED;
+                if (xValue == 1) current_state = DISTANCE_TRAVELLED;
+                else if (xValue == 2) current_state = GOAL_PROGRESS;
                 xMoveOk = false;
             }
             break;
@@ -42,8 +42,8 @@ void step_counter_state(void) {
         case GOAL_PROGRESS:
 
             if (xReady) {
-                if (xValue == 1) current_state = DISTANCE_TRAVELLED;
-                else if (xValue == 2) current_state = CURRENT_STEPS;
+                if (xValue == 1) current_state = CURRENT_STEPS;
+                else if (xValue == 2) current_state = DISTANCE_TRAVELLED;
                 xMoveOk = false;
             }
 
@@ -54,8 +54,8 @@ void step_counter_state(void) {
 
         case DISTANCE_TRAVELLED:
             if (xReady) {
-                if (xValue == 1) current_state = CURRENT_STEPS;
-                else if (xValue == 2) current_state = GOAL_PROGRESS;
+                if (xValue == 1) current_state = GOAL_PROGRESS;
+                else if (xValue == 2) current_state = CURRENT_STEPS;
                 xMoveOk = false;
 
             }
