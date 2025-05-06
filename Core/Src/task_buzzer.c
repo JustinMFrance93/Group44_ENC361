@@ -25,25 +25,26 @@ void task_buzzer_init(void)
 void task_buzzer_execute(void)
 {
     if (nums.steps >= nums.goal && !buzzerActive) {
-        buzzerStartTime = HAL_GetTick();  // Start the buzzer timer
-        buzzerActive = true;                 // Set the buzzer as active
+        buzzerStartTime = HAL_GetTick();
+        buzzerActive = true;
     }
 
-    // If the buzzer is active, keep it on for 2 seconds
+    // If the buzzer is active play for 2 seconds
     if (buzzerActive) {
         if (HAL_GetTick() - buzzerStartTime < 2000) {
-            pwm_setDutyCycle(&htim16, TIM_CHANNEL_1, 50);  // Turn on buzzer
+            pwm_setDutyCycle(&htim16, TIM_CHANNEL_1, 50);
         } else {
-            pwm_setDutyCycle(&htim16, TIM_CHANNEL_1, 0);   // Turn off buzzer after 2 seconds
-                                           // Reset buzzer state
+            pwm_setDutyCycle(&htim16, TIM_CHANNEL_1, 0);
+
         }
     } else {
-        // If the goal is not reached, make sure the buzzer is off
+
         pwm_setDutyCycle(&htim16, TIM_CHANNEL_1, 0);
     }
 
+    // Reset buzzer when the goal is no longer met
     if (nums.steps < nums.goal) {
-        buzzerActive = false;  // Reset buzzer when the goal is no longer reached
+        buzzerActive = false;
     }
 
 }
