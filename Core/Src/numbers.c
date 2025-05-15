@@ -6,13 +6,23 @@
  */
 #include "numbers.h"
 #include "adc_value.h"
+#include "task_accelerometer.h"
+#include "stdio.h"
+#include <string.h>
+#include "usart.h"
 #include "state.h"
 #include "stdbool.h"
 
 #define PRESCALER  6000 //get to goal within 15 secs
-
+#define N 100
+#define NVAR_THRESHOLD 3000000000
 static bool testmode = false;
 static bool changeUnit = false;
+
+static uint32_t mean_acc = 0;
+static uint32_t prev_acc_mag = 0;
+static uint32_t acc_mag_buffer[N] = {0};
+
 
 numbers_t nums = {0,1000,0,0.0,0};
 
@@ -73,4 +83,52 @@ void test_mode(){
 
 	step_count();
 
+}
+
+void detect_steps(){
+	char mag_string[30] = {0};
+	char mean_string[30] = {0};
+	char nvar_string[30] = {0};
+	char thresh_string[30] = {0};
+	uint32_t acc_mag = get_acceleration_mag();
+
+
+    // Shift buffer to make room for new value
+    for (int i = N - 1; i > 0; i--) {
+        acc_mag_buffer[i] = acc_mag_buffer[i - 1];
+    }
+    acc_mag_buffer[0] = acc_mag;
+
+    // Compute mean
+    uint32_t sum = 0;
+    for (int i = 0; i < N; i++) {
+        sum += acc_mag_buffer[i];
+    }
+    mean_acc = sum / N;
+
+    // Compute variance (Nvar)
+    uint32_t Nvar = 0;
+    for (int i = 0; i < N; i++) {
+        int32_t diff = acc_mag_buffer[i] - mean_acc;
+        Nvar += diff * diff;
+    }
+
+    // Step detection condition
+    if ((acc_mag > mean_acc) && (prev_acc_mag < mean_acc) && (Nvar > NVAR_THRESHOLD)) {
+        nums.steps++;
+    }
+
+    prev_acc_mag = acc_mag;
+
+    snprintf(mag_string, sizeof(mag_string), "MAG:%-15lu", acc_mag);
+    snprintf(mean_string, sizeof(mean_string), "MEAN:%-15lu", mean_acc);
+    snprintf(nvar_string, sizeof(nvar_string), "Nvar:%-15lu", Nvar);
+    snprintf(thresh_string, sizeof(thresh_string), "steps:%-15d\n\r", nums.steps);
+
+    // Now print all the strings on the same line
+
+    HAL_UART_Transmit(&huart2, (uint8_t*)mag_string, sizeof(mag_string), 1000);
+	HAL_UART_Transmit(&huart2, (uint8_t*)mean_string, sizeof(mean_string), 1000);
+	HAL_UART_Transmit(&huart2, (uint8_t*)nvar_string, sizeof(nvar_string), 1000);
+	HAL_UART_Transmit(&huart2, (uint8_t*)thresh_string, sizeof(thresh_string), 1000);
 }

@@ -23,5 +23,7 @@ uint32_t getTaskAccelerometer(void);
 void setTaskAccelerometer(uint32_t nextRunTick);
 void incrementTaskAccelerometer(void);
 
+uint32_t get_acceleration_mag(void);
+
 
 #endif /* INC_TASK_ACCELEROMETER_H_ */

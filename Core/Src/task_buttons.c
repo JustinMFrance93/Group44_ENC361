@@ -38,30 +38,30 @@ void task_buttons_execute(void)
 		//SW1 cycle through 10 stages of brightness on top LED
 		if (buttons_checkButton(UP) == PUSHED) {
 			step_increment();
-
-			uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
-			duty += 10;
-			if (duty > 100) {
-				duty = 0;
-			}
-			pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
+//
+//			uint8_t duty = pwm_getDutyCycle(&htim2, TIM_CHANNEL_3);
+//			duty += 10;
+//			if (duty > 100) {
+//				duty = 0;
+//			}
+//			pwm_setDutyCycle(&htim2, TIM_CHANNEL_3, duty);
 		}
 
 		//SW2 toggle bottom LED
 		if (buttons_checkButton(DOWN) == PUSHED) {
 			buttonCount += 1;
-			rgb_led_toggle(RGB_DOWN);
+			//rgb_led_toggle(RGB_DOWN);
 			switch_pressed = !switch_pressed;
 		}
 
 		//SW3 toggle right LED
 		if (buttons_checkButton(RIGHT) == PUSHED) {
-			rgb_led_toggle(RGB_RIGHT);
+			//rgb_led_toggle(RGB_RIGHT);
 		}
 
 		//SW4 toggle left LED
 		if (buttons_checkButton(LEFT) == PUSHED) {
-			rgb_led_toggle(RGB_LEFT);
+			//rgb_led_toggle(RGB_LEFT);
 		}
 
 		if (current_time - last_reset_time >= 1200) {
@@ -75,7 +75,7 @@ void task_buttons_execute(void)
 		}
 	}
 
-	buttons_update ();
+	buttons_update();
 }
 
 uint32_t getTaskButtons(void)
