@@ -14,8 +14,8 @@
 #include "stdbool.h"
 
 #define PRESCALER  6000 //get to goal within 15 secs
-#define N 100
-#define NVAR_THRESHOLD 3000000000
+#define N 10
+#define NVAR_THRESHOLD 10000000
 static bool testmode = false;
 static bool changeUnit = false;
 

@@ -28,3 +28,12 @@ int16_t fir_filter(FIRFilter *filter, int16_t input) {
 
     return (int16_t) output / N;  // This division assumes averaging is intended
 }
+
+
+int16_t ar_filter(int16_t input,int16_t* previous_output) {
+	const int32_t alpha = 31457;
+	const int32_t one_minus_alpha = 32768 - alpha;
+	int32_t output = ((*previous_output) * (int32_t)alpha + input * (one_minus_alpha)) >> 15;
+	*previous_output  = (int16_t)output;
+	return (int16_t)output;
+}

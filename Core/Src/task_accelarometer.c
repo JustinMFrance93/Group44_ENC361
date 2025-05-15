@@ -35,8 +35,9 @@ FIRFilter x_accel_filter;
 FIRFilter y_accel_filter;
 FIRFilter z_accel_filter;
 
-
-
+static int16_t previous_outputX = 0;
+static int16_t previous_outputY = 0;
+static int16_t previous_outputZ = 0;
 
 
 void task_accelerometer_init(void)
@@ -48,6 +49,8 @@ void task_accelerometer_init(void)
 	fir_filter_init(&x_accel_filter, my_coeffs);
 	fir_filter_init(&y_accel_filter, my_coeffs);
 	fir_filter_init(&z_accel_filter, my_coeffs);
+
+
 }
 
 void task_accelerometer_execute(void)
@@ -58,7 +61,8 @@ void task_accelerometer_execute(void)
 //	char mag_string[30] = {0};
 
 
-	bool switch2_pressed = getSwitch2();
+	detect_steps();
+
 
 	uint8_t acc_x_low = imu_lsm6ds_read_byte(OUTX_L_XL);
 	uint8_t acc_x_high = imu_lsm6ds_read_byte(OUTX_H_XL);
@@ -72,10 +76,15 @@ void task_accelerometer_execute(void)
 	int16_t acc_XValue = ((int16_t)((acc_x_high << 8) | acc_x_low)) - X_OFFSET;
 	int16_t acc_YValue = ((int16_t)((acc_y_high << 8) | acc_y_low)) - Y_OFFSET;
 	int16_t acc_ZValue = ((int16_t)((acc_z_high << 8) | acc_z_low)) - Z_OFFSET;
+//
+//	int filtered_x = fir_filter(&x_accel_filter, acc_XValue);
+//	int filtered_y = fir_filter(&y_accel_filter, acc_YValue);
+//	int filtered_z = fir_filter(&z_accel_filter, acc_ZValue);
 
-	int filtered_x = fir_filter(&x_accel_filter, acc_XValue);
-	int filtered_y = fir_filter(&y_accel_filter, acc_YValue);
-	int filtered_z = fir_filter(&z_accel_filter, acc_ZValue);
+	int filtered_x = (ar_filter(acc_XValue, &previous_outputX)) / 100;
+	int filtered_y = (ar_filter(acc_YValue, &previous_outputY)) / 100;
+	int filtered_z = (ar_filter(acc_ZValue, &previous_outputZ)) / 100;
+
 	magnitude = filtered_x * filtered_x + filtered_y * filtered_y + filtered_z * filtered_z;
 
 //	snprintf(acc_string_x, sizeof(acc_string_x), "x: %6d  ", filtered_x);

@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include "config.h"
 
-#define TASK_ACCELEROMETER_FREQUENCY_HZ 80 //ACCELEROMETER frequency
+#define TASK_ACCELEROMETER_FREQUENCY_HZ 100 //ACCELEROMETER frequency
 #define TASK_ACCELEROMETER_PERIOD_TICKS (TICK_FREQUENCY_HZ/TASK_ACCELEROMETER_FREQUENCY_HZ)
 
 void task_accelerometer_init(void);
