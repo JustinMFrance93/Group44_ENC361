@@ -16,7 +16,9 @@ typedef struct {
 	int32_t steps;
     uint32_t goal;
     uint32_t step_percent;
-    float kilometers;
+    uint32_t kilometers_x1000;
+    uint32_t kilometers_int;
+	uint32_t kilometers_frac;
     uint32_t yards;
 } numbers_t;
 
@@ -36,6 +38,8 @@ void toggle_test_mode();
 bool get_test_mode();
 
 void test_mode();
+
+void detect_steps();
 
 
 

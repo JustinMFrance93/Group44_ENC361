@@ -5,35 +5,24 @@
  *      Author: wfr19
  */
 #include "filter.h"
+#include <stddef.h>
 
-
-void fir_filter_init(FIRFilter *filter, const int *coeffs) {
-    for (int i = 0; i < N; i++) {
-        filter->coeffs[i] = coeffs[i];
-        filter->circ_buffer[i] = 0;
-    }
-    filter->index = 0;
-}
-
-int16_t fir_filter(FIRFilter *filter, int16_t input) {
-    int32_t output = 0;
-
-    filter->circ_buffer[filter->index] = input;
-
-    for (int i = 0; i < N; i++) {
-        output += filter->coeffs[i] * filter->circ_buffer[(filter->index - i + N) % N];
+int16_t fir_filter(Buffer_t* buffer, int16_t input) {
+    buffer->circ_buffer[buffer->index] = input;
+    buffer->index ++;
+    if (buffer->index >= N) {
+    	buffer->index = 0;
     }
 
-    filter->index = (filter->index + 1) % N;
+    int64_t output = 0;
 
-    return (int16_t) output / N;  // This division assumes averaging is intended
+
+    for (size_t i = 0; i < N; i++) {
+        output += buffer->circ_buffer[i];
+    }
+
+    int32_t average = output / N;
+    return (int16_t) average;  // This division assumes averaging is intended
 }
 
 
-int16_t ar_filter(int16_t input,int16_t* previous_output) {
-	const int32_t alpha = 31457;
-	const int32_t one_minus_alpha = 32768 - alpha;
-	int32_t output = ((*previous_output) * (int32_t)alpha + input * (one_minus_alpha)) >> 15;
-	*previous_output  = (int16_t)output;
-	return (int16_t)output;
-}

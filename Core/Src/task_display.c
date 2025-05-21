@@ -75,7 +75,7 @@ void task_display_execute(void)
 
 		ssd1306_SetCursor(0,12);
 				if (change_unit()) {
-					snprintf(value_string, sizeof(value_string), "Distance: %.3f km",nums.kilometers);
+					snprintf(value_string, sizeof(value_string), "Distance:  %lu.%03lu", nums.kilometers_int, nums.kilometers_frac);
 				} else {
 						snprintf(value_string, sizeof(value_string), "Distance: %lu yd",nums.yards);
 				}
@@ -100,11 +100,6 @@ uint32_t getTaskDisplay(void)
 	return taskDisplayNextRun;
 }
 
-//uint32_t setGoal(uint32_t new_goal)
-//{
-//	goal = new_goal;
-//	return goal;
-//}
 
 void setTaskDisplay(uint32_t nextRunTick)
 {
