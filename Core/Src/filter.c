@@ -16,13 +16,11 @@ int16_t fir_filter(Buffer_t* buffer, int16_t input) {
 
     int64_t output = 0;
 
-
     for (size_t i = 0; i < N; i++) {
         output += buffer->circ_buffer[i];
     }
-
     int32_t average = output / N;
-    return (int16_t) average;  // This division assumes averaging is intended
+    return (int16_t) average;
 }
 
 

@@ -21,5 +21,4 @@ void step_counter_state(void);
 
 uint32_t get_state(void);
 
-
 #endif /* INC_STATE_H_ */

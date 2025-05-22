@@ -21,14 +21,13 @@ void step_counter_state(void) {
     	xMoveOk = true;
     }
 
+    //state machine
     if (current_state != previous_state) {
         if (current_state == GOAL_PROGRESS) {
             buttons_reset(JOY);
         }
         previous_state = current_state;
     }
-
-
 
     switch (current_state) {
         case CURRENT_STEPS:

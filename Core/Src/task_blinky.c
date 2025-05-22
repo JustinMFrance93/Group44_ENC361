@@ -17,12 +17,11 @@ static uint8_t duty = 0;
 void task_blinky_init(void)
 {
 	taskBlinkyNextRun = HAL_GetTick() + TASK_BLINKY_PERIOD_TICKS;
-
-
 }
 
 void task_blinky_execute(void)
 {
+	//Flashing LED
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 
 	rgb_colour_all_on();
@@ -31,6 +30,7 @@ void task_blinky_execute(void)
 	uint32_t goal_half = nums.goal / 2;
 	uint32_t goal_three_quart = (nums.goal / 4) * 3;
 
+	//Turn corresponding led on determined by percentage of goal completed
 	if (nums.steps < goal_quart){
 		duty = (nums.steps * 100) / nums.goal;
 	} else {

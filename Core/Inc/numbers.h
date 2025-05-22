@@ -11,7 +11,6 @@
 #include "stdint.h"
 #include <stdbool.h>
 
-
 typedef struct {
 	int32_t steps;
     uint32_t goal;
@@ -30,7 +29,6 @@ void step_increment();
 
 bool change_unit(void) ;
 
-
 uint32_t set_goal(uint32_t new_goal);
 
 void toggle_test_mode();
@@ -40,8 +38,5 @@ bool get_test_mode();
 void test_mode();
 
 void detect_steps();
-
-
-
 
 #endif /* INC_NUMBERS_H_ */

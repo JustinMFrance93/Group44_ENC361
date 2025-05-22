@@ -10,7 +10,6 @@
 
 #include "stdint.h"
 
-
 #define N 32  // Number of coefficients
 
 typedef struct {

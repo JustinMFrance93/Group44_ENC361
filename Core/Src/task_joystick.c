@@ -14,7 +14,6 @@
 
 static uint32_t taskJoystickNextRun;
 
-
 void task_joystick_init(void)
 {
 	taskJoystickNextRun = HAL_GetTick() + TASK_JOYSTICK_PERIOD_TICKS;
@@ -29,8 +28,6 @@ void task_joystick_execute(void)
 	if (get_test_mode()) {
 		test_mode();
 	}
-
-
 }
 
 uint32_t getTaskJoystick(void)
