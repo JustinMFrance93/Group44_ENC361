@@ -4,13 +4,13 @@
  *  Created on: Feb 27, 2025
  *      Author: wfr19
  */
-//Milestone 1
 #include "adc.h"
 #include "task_blinky.h"
 #include "task_buttons.h"
 #include "task_joystick.h"
 #include "task_display.h"
 #include "task_buzzer.h"
+#include "task_accelerometer.h"
 #include "config.h"
 
 #define HZ_TO_TICKS(FREQUENCY_HZ) (TICK_FREQUENCY_HZ/FREQUENCY_HZ)
@@ -22,7 +22,7 @@ int app_main()
 	task_joystick_init();
 	task_display_init();
 	task_buzzer_init();
-
+	task_accelerometer_init();
 
 	while (1)
 	{
@@ -51,6 +51,11 @@ int app_main()
 		if(ticks > getTaskBuzzer()) {
 		  task_buzzer_execute();
 		  incrementTaskBuzzer();
+		}
+
+		if(ticks > getTaskAccelerometer()) {
+			task_accelerometer_execute();
+			incrementTaskAccelerometer();
 		}
 
 

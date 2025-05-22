@@ -20,11 +20,6 @@
 #include "numbers.h"
 
 static uint32_t taskDisplayNextRun;
-//static uint32_t steps = 100;
-//static uint32_t goal = 1000;
-
-
-
 
 void task_display_init(void)
 {
@@ -34,18 +29,14 @@ void task_display_init(void)
 
 void task_display_execute(void)
 {
-
-
 	state_t state = get_state();
 
 	ssd1306_Fill(Black);
 	ssd1306_SetCursor(0,0);
 	char title_string[30] = {0};
 	char value_string[30] = {0};
-//	int stepsPercent = steps * 100 / goal;
-//	float kilometers = (steps * 0.9) / 1000;
-//	int yards = kilometers * 1094;
 
+	//depending on the current state format and display strings
 	if (state == CURRENT_STEPS){
 		snprintf(title_string, sizeof(title_string), "Current Steps:");
 		ssd1306_WriteString(title_string, Font_7x10, White);
@@ -75,7 +66,7 @@ void task_display_execute(void)
 
 		ssd1306_SetCursor(0,12);
 				if (change_unit()) {
-					snprintf(value_string, sizeof(value_string), "Distance: %.3f km",nums.kilometers);
+					snprintf(value_string, sizeof(value_string), "Distance:  %lu.%03lu", nums.kilometers_int, nums.kilometers_frac);
 				} else {
 						snprintf(value_string, sizeof(value_string), "Distance: %lu yd",nums.yards);
 				}
@@ -90,8 +81,6 @@ void task_display_execute(void)
 			ssd1306_WriteString(value_string, Font_7x10, White);
 	}
 
-
-
 	ssd1306_UpdateScreen();
 }
 
@@ -100,11 +89,6 @@ uint32_t getTaskDisplay(void)
 	return taskDisplayNextRun;
 }
 
-//uint32_t setGoal(uint32_t new_goal)
-//{
-//	goal = new_goal;
-//	return goal;
-//}
 
 void setTaskDisplay(uint32_t nextRunTick)
 {

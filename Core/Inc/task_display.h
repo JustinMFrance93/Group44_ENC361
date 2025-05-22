@@ -20,8 +20,6 @@ void task_display_execute(void);
 
 uint32_t getTaskDisplay(void);
 
-//uint32_t setGoal(uint32_t new_goal);
-
 void setTaskDisplay(uint32_t nextRunTick);
 
 void incrementTaskDisplay(void);
