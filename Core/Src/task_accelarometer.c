@@ -19,6 +19,7 @@
 #include "stdbool.h"
 #include "filter.h"
 #include "numbers.h"
+#include "state.h"
 
 //Offsets determined by calibration
 #define X_OFFSET 200
@@ -45,7 +46,10 @@ void task_accelerometer_execute(void)
 	char acc_string_y[30] = {0};
 	char acc_string_z[30] = {0};
 
-	detect_steps();
+	//detect steps as long as not in set goal state
+	if (get_state() != SET_GOAL) {
+		detect_steps();
+	}
 
 	//Get accelerometer data
 	uint8_t acc_x_low = imu_lsm6ds_read_byte(OUTX_L_XL);

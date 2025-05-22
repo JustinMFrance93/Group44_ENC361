@@ -9,9 +9,7 @@
 #include "adc.h"
 #include <stdbool.h>
 
-
 static uint16_t raw_adc[3];
-
 
 static uint16_t joystickXValue;
 static uint16_t joystickYValue;
@@ -22,13 +20,10 @@ static uint16_t xPosition = 0;
 static uint16_t xPrevPosition = 0;
 static bool xPositionChanged = false;
 
-
-
 static uint16_t yPosition = 0;
 static uint16_t yPrevPosition = 0;
 static uint16_t yPercent = 0;
 static bool yPositionChanged = false;
-
 
 void process_adc_values(void) {
 
@@ -65,9 +60,6 @@ void process_adc_values(void) {
 
     yPositionChanged = (yPosition != yPrevPosition);
     yPrevPosition = yPosition;
-
-
-
 }
 
 // Getter functions for the processed ADC values
