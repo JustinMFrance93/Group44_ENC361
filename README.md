@@ -2,7 +2,7 @@ ENCE361: Personal step counter project
 
 Authors: Justin France and Willaim Fraser
 
- The goal of this project is to implement an embedded sysytem to record a user’s steps and
+ The goal of this project is to implement an embedded system to record a user’s steps and
  estimate the distance travelled by the user. The step counter will be powered by a STM32C071
  nucleo development board, connected to an expansion board. The project will involve developing
  firmware for the STM32C071 to record and display step data via a graphical user interface. Like
